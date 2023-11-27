@@ -1,0 +1,44 @@
+<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.5/socket.io.js"></script>
+
+
+
+<body>
+    <img src="./offline.png" height="50" width="" id="bob">bob<br>
+    <img src="./offline.png" height="50" width="" id="alan">alan<br>
+    <img src="./offline.png" height="50" width="" id="john">john<br>
+</body>
+<script>
+    const host = "http://127.0.0.1:3000";
+    // PASS your query parameters
+
+    const socket = io(host, {
+        path: "/pathToConnection",
+        transports: ['websocket'], // https://stackoverflow.com/a/52180905/8987128
+        upgrade: false,
+        reconnection: false,
+        rejectUnauthorized: false
+    });
+
+    socket.once("connect", () => {
+
+        // USER IS ONLINE
+        socket.on("online", (userId) => {
+            console.log(userId, "Is Online!"); // update online status
+            const selectedElem = document.getElementById(userId)
+            selectedElem.src = "./online.png"
+        });
+
+        // USER IS OFFLINE
+        socket.on("offline", (userId) => {
+            console.log(userId, "Is Offline!"); // update offline status
+            const selectedElem = document.getElementById(userId)
+            selectedElem.src = "./offline.png"
+        });
+
+    });
+</script>
+
+
+
+</html>

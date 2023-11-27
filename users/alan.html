@@ -1,0 +1,39 @@
+<!-- SOCKET LIBRARY IN HTML -->
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.5/socket.io.js"></script>
+</head>
+
+<body>
+    <h3>alan</h3>
+    <script>
+        const host = "http://127.0.0.1:3000";
+        // PASS your query parameters
+        const queryParams = { userId: "alan" };
+        const socket = io(host, {
+            path: "/pathToConnection",
+            transports: ['websocket'], // https://stackoverflow.com/a/52180905/8987128
+            upgrade: false,
+            query: queryParams,
+            reconnection: false,
+            rejectUnauthorized: false
+        });
+
+        socket.once("connect", () => {
+
+            // USER IS ONLINE
+            socket.on("online", (userId) => {
+                console.log(userId, "Is Online!"); // update online status
+            });
+
+            // USER IS OFFLINE
+            socket.on("offline", (userId) => {
+                console.log(userId, "Is Offline!"); // update offline status
+            });
+
+        });
+    </script>
+</body>
+
+</html>
